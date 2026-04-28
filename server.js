@@ -65,17 +65,23 @@ Respond ONLY with a valid JSON object (no markdown, no backticks, no preamble) w
 Make ALL values realistic, genre-accurate, and directly usable in BandLab Android. Be VERY specific with numbers.`;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'llama-3.3-70b-versatile',
         max_tokens: 2000,
-        messages: [{ role: 'user', content: prompt }]
+        temperature: 0.7,
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a professional beat producer. Always respond with valid JSON only, no markdown, no backticks, no extra text.'
+          },
+          { role: 'user', content: prompt }
+        ]
       })
     });
 
@@ -85,7 +91,7 @@ Make ALL values realistic, genre-accurate, and directly usable in BandLab Androi
       return res.status(500).json({ error: aiData.error.message });
     }
 
-    const rawText = aiData.content[0].text;
+    const rawText = aiData.choices[0].message.content;
 
     // Strip any accidental markdown fences
     const clean = rawText.replace(/```json|```/g, '').trim();
@@ -103,3 +109,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🎵 ZEXBEAT AI running on port ${PORT}`);
 });
+
