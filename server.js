@@ -105,7 +105,7 @@ Make ALL values realistic, genre-accurate, and directly usable in BandLab Androi
 });
 
 // ─── Start ───────────────────────────────────────────────────────────────────
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`🎵 ZEXBEAT AI running on port ${PORT}`);
 });
