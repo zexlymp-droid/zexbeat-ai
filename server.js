@@ -5,23 +5,30 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ─── AI Generate Endpoint ────────────────────────────────────────────────────
 app.post('/api/generate', async (req, res) => {
   const { genre, reference, bpm, key, mood, extra } = req.body;
 
-  const prompt = `You are a professional beat producer and BandLab Android expert.
+  const prompt = `Kamu adalah produser beat profesional dan ahli BandLab Android.
+WAJIB: Tulis SEMUA output dalam Bahasa Indonesia. Hanya istilah teknis musik yang boleh dalam bahasa Inggris (BPM, EQ, reverb, nama chord, nama instrumen di BandLab).
 
-Generate a complete, professional beat recipe for:
+Buat resep beat lengkap dan profesional untuk:
 - Genre: ${genre}
-- Reference artist/subgenre: ${reference || 'none specified'}
-- BPM preference: ${bpm || 'auto based on genre'}
-- Key/Scale: ${key || 'auto based on genre'}
-- Mood/Vibe: ${mood || 'auto based on genre'}
-- Additional notes: ${extra || 'none'}
+- Referensi artis/subgenre: ${reference || 'tidak ditentukan'}
+- Preferensi BPM: ${bpm || 'otomatis sesuai genre'}
+- Key/Scale: ${key || 'otomatis sesuai genre'}
+- Mood/Vibe: ${mood || 'otomatis sesuai genre'}
+- Catatan tambahan: ${extra || 'tidak ada'}
 
-Respond ONLY with a valid JSON object (no markdown, no backticks, no preamble) with this exact structure:
+KONTEKS PENTING: User menggunakan BandLab Android dengan FITUR TEMPLATE yang sudah ada. Semua langkah harus menjelaskan cara:
+1. Memilih template yang tepat di BandLab
+2. Mengedit dan mengganti sounds dalam template tersebut
+3. Mengatur bagian Intro, Verse, Hook, Outro menggunakan fitur Arrange di BandLab
+4. Mengubah pattern yang ada di template sesuai genre yang diminta
+Jelaskan setiap langkah dengan sangat detail dan mudah dipahami pemula.
+
+Balas HANYA dengan JSON object yang valid (tanpa markdown, tanpa backtick, tanpa teks lain) dengan struktur persis seperti ini:
 {
-  "identity": "2-3 sentence description of this beat's character, sound, and feel. Make it vivid and specific.",
+  "identity": "2-3 kalimat deskripsi karakter beat ini dalam Bahasa Indonesia. Jelaskan vibes, sound, dan feel-nya dengan vivid dan spesifik.",
   "settings": [
     {"label": "BPM", "value": "140", "unit": ""},
     {"label": "Key", "value": "F# Minor", "unit": ""},
@@ -37,32 +44,34 @@ Respond ONLY with a valid JSON object (no markdown, no backticks, no preamble) w
     {"label": "Snare Level", "value": "78", "unit": "%"}
   ],
   "instruments": [
-    "DRUMS: Describe kick pattern and drum kit type for BandLab",
-    "HI-HAT: Pattern, velocity, swing %",
-    "BASS: Type (808, bass synth, etc.), note pattern, settings",
-    "MELODY 1: Instrument name in BandLab, notes/chords to use",
-    "MELODY 2 (optional): Second layer instrument",
-    "PAD/TEXTURE: Atmospheric layer details",
-    "SFX: Any special effects, risers, transitions"
+    "DRUMS: nama drum kit di BandLab yang cocok + penjelasan pattern kick dan snare",
+    "HI-HAT: pattern, velocity berapa %, swing berapa %",
+    "BASS: jenis bass di BandLab + pola not + settingnya",
+    "MELODY 1: nama instrumen di BandLab + not/chord + cara mainnya",
+    "MELODY 2: layer kedua instrumen + pola + fungsinya dalam beat",
+    "PAD/TEXTURE: instrumen atmosfer + cara settingnya",
+    "SFX: efek transisi, riser, atau suara tambahan"
   ],
-  "structure": "Full beat structure with bar counts. Example:\n[Intro] 0:00–0:08 — Bars 1-4: just hi-hats + pad\n[Verse] 0:08–0:32 — Bars 5-16: full beat\n[Pre-Hook] 0:32–0:40 — Bars 17-20: build\n[Hook] 0:40–1:08 — Bars 21-34: full energy\n[Verse 2]...\n[Outro]",
+  "structure": "Struktur beat lengkap dalam Bahasa Indonesia dengan hitungan bar:\\n[Intro] 0:00-0:08 - Bar 1-4: penjelasan isi bagian ini\\n[Verse] 0:08-0:32 - Bar 5-16: penjelasan\\n[Pre-Hook] 0:32-0:40 - Bar 17-20: penjelasan\\n[Hook] 0:40-1:08 - Bar 21-34: penjelasan\\n[Verse 2] 1:08-1:32 - penjelasan\\n[Bridge] 1:32-1:48 - penjelasan\\n[Outro] 1:48-2:00 - penjelasan",
   "steps": [
-    "Step to do in BandLab Android — very specific",
-    "Step 2...",
-    "Step 3...",
-    "Step 4...",
-    "Step 5...",
-    "Step 6...",
-    "Step 7...",
-    "Step 8...",
-    "Step 9...",
-    "Step 10..."
+    "Buka BandLab Android, tap tombol + lalu pilih Templates, cari template yang cocok untuk genre ini",
+    "Langkah 2: cara ganti BPM template ke angka yang benar",
+    "Langkah 3: cara ganti drum kit di template",
+    "Langkah 4: cara edit pattern drum di Beat Maker",
+    "Langkah 5: cara ganti atau tambah instrumen melody",
+    "Langkah 6: cara tambah bass 808",
+    "Langkah 7: cara buat section Intro di fitur Arrange BandLab",
+    "Langkah 8: cara buat Verse dan Hook yang berbeda di Arrange",
+    "Langkah 9: cara setting mixer - level, pan, reverb per track",
+    "Langkah 10: cara tambah efek dan finalisasi beat",
+    "Langkah 11: tips spesifik genre ini",
+    "Langkah 12: cara save dan export beat"
   ],
-  "mixing": "Detailed mixing tips specific to this genre. Include specific BandLab mixer settings: which tracks to pan, reverb send amounts per instrument, sidechain if applicable, EQ cuts for each layer.",
-  "protips": "3-4 professional tips to make this beat stand out. Genre-specific production secrets."
+  "mixing": "Tips mixing dalam Bahasa Indonesia khusus genre ini. Sebutkan track mana yang di-pan berapa %, reverb send berapa % tiap instrumen, cara sidechain, EQ cut dan boost spesifik. Semua angka harus spesifik.",
+  "protips": "3-4 tips profesional dalam Bahasa Indonesia untuk membuat beat ini outstanding. Rahasia produser spesifik genre ini."
 }
 
-Make ALL values realistic, genre-accurate, and directly usable in BandLab Android. Be VERY specific with numbers.`;
+Semua nilai harus realistis, akurat untuk genre tersebut, dan bisa langsung dipraktekkan di BandLab Android. Sangat spesifik dengan angka.`;
 
   try {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -73,12 +82,12 @@ Make ALL values realistic, genre-accurate, and directly usable in BandLab Androi
       },
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
-        max_tokens: 2000,
+        max_tokens: 2500,
         temperature: 0.7,
         messages: [
           {
             role: 'system',
-            content: 'You are a professional beat producer. Always respond with valid JSON only, no markdown, no backticks, no extra text.'
+            content: 'Kamu adalah produser beat profesional ahli BandLab Android. Selalu balas dengan JSON valid saja, tanpa markdown, tanpa backtick, tanpa teks tambahan. Semua output dalam Bahasa Indonesia.'
           },
           { role: 'user', content: prompt }
         ]
@@ -92,21 +101,17 @@ Make ALL values realistic, genre-accurate, and directly usable in BandLab Androi
     }
 
     const rawText = aiData.choices[0].message.content;
-
-    // Strip any accidental markdown fences
     const clean = rawText.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(clean);
 
     res.json(parsed);
   } catch (err) {
     console.error('Generate error:', err);
-    res.status(500).json({ error: err.message || 'Failed to generate beat' });
+    res.status(500).json({ error: err.message || 'Gagal generate beat' });
   }
 });
 
-// ─── Start ───────────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`🎵 ZEXBEAT AI running on port ${PORT}`);
 });
-
