@@ -19,16 +19,11 @@ Buat resep beat lengkap dan profesional untuk:
 - Mood/Vibe: ${mood || 'otomatis sesuai genre'}
 - Catatan tambahan: ${extra || 'tidak ada'}
 
-KONTEKS PENTING: User menggunakan BandLab Android dengan FITUR TEMPLATE yang sudah ada. Semua langkah harus menjelaskan cara:
-1. Memilih template yang tepat di BandLab
-2. Mengedit dan mengganti sounds dalam template tersebut
-3. Mengatur bagian Intro, Verse, Hook, Outro menggunakan fitur Arrange di BandLab
-4. Mengubah pattern yang ada di template sesuai genre yang diminta
-Jelaskan setiap langkah dengan sangat detail dan mudah dipahami pemula.
+KONTEKS PENTING: User menggunakan BandLab Android dengan FITUR TEMPLATE. Semua langkah harus menjelaskan cara memilih template, mengedit sounds, dan mengatur section Intro/Verse/Hook/Outro di fitur Arrange BandLab Android.
 
-Balas HANYA dengan JSON object yang valid (tanpa markdown, tanpa backtick, tanpa teks lain) dengan struktur persis seperti ini:
+Balas HANYA dengan JSON object yang valid (tanpa markdown, tanpa backtick, tanpa teks lain):
 {
-  "identity": "2-3 kalimat deskripsi karakter beat ini dalam Bahasa Indonesia. Jelaskan vibes, sound, dan feel-nya dengan vivid dan spesifik.",
+  "identity": "2-3 kalimat deskripsi karakter beat ini dalam Bahasa Indonesia. Jelaskan vibes, sound, dan feel-nya.",
   "settings": [
     {"label": "BPM", "value": "140", "unit": ""},
     {"label": "Key", "value": "F# Minor", "unit": ""},
@@ -52,7 +47,72 @@ Balas HANYA dengan JSON object yang valid (tanpa markdown, tanpa backtick, tanpa
     "PAD/TEXTURE: instrumen atmosfer + cara settingnya",
     "SFX: efek transisi, riser, atau suara tambahan"
   ],
-  "structure": "Struktur beat lengkap dalam Bahasa Indonesia dengan hitungan bar:\\n[Intro] 0:00-0:08 - Bar 1-4: penjelasan isi bagian ini\\n[Verse] 0:08-0:32 - Bar 5-16: penjelasan\\n[Pre-Hook] 0:32-0:40 - Bar 17-20: penjelasan\\n[Hook] 0:40-1:08 - Bar 21-34: penjelasan\\n[Verse 2] 1:08-1:32 - penjelasan\\n[Bridge] 1:32-1:48 - penjelasan\\n[Outro] 1:48-2:00 - penjelasan",
+  "volume_per_section": [
+    {
+      "instrument": "Kick",
+      "intro": "-8 dB",
+      "verse": "-5 dB",
+      "prehook": "-3 dB",
+      "hook": "0 dB",
+      "outro": "-8 dB",
+      "note": "Naikan bertahap biar makin hype pas hook"
+    },
+    {
+      "instrument": "Snare",
+      "intro": "mute",
+      "verse": "-6 dB",
+      "prehook": "-4 dB",
+      "hook": "-2 dB",
+      "outro": "-6 dB",
+      "note": "Di intro dikosongkan biar ada efek build"
+    },
+    {
+      "instrument": "Hi-Hat",
+      "intro": "-10 dB",
+      "verse": "-7 dB",
+      "prehook": "-5 dB",
+      "hook": "-4 dB",
+      "outro": "-10 dB",
+      "note": "Tambah open hat di pre-hook buat tension"
+    },
+    {
+      "instrument": "Bass 808",
+      "intro": "-12 dB",
+      "verse": "-6 dB",
+      "prehook": "-5 dB",
+      "hook": "-2 dB",
+      "outro": "-12 dB",
+      "note": "Bass paling keras di hook, jadi tulang punggung beat"
+    },
+    {
+      "instrument": "Melody 1",
+      "intro": "-8 dB",
+      "verse": "-9 dB",
+      "prehook": "-7 dB",
+      "hook": "-5 dB",
+      "outro": "-8 dB",
+      "note": "Sedikit lebih pelan dari drum biar tidak bentrok"
+    },
+    {
+      "instrument": "Melody 2",
+      "intro": "mute",
+      "verse": "mute",
+      "prehook": "-10 dB",
+      "hook": "-7 dB",
+      "outro": "mute",
+      "note": "Masuk mulai pre-hook sebagai layer tambahan"
+    },
+    {
+      "instrument": "Pad/Texture",
+      "intro": "-6 dB",
+      "verse": "-12 dB",
+      "prehook": "-10 dB",
+      "hook": "-14 dB",
+      "outro": "-6 dB",
+      "note": "Paling keras di intro dan outro untuk atmosfer"
+    }
+  ],
+  "structure": "Struktur beat lengkap dalam Bahasa Indonesia dengan hitungan bar:\\n[Intro] 0:00-0:08 - Bar 1-4: penjelasan\\n[Verse] 0:08-0:32 - Bar 5-16: penjelasan\\n[Pre-Hook] 0:32-0:40 - Bar 17-20: penjelasan\\n[Hook] 0:40-1:08 - Bar 21-34: penjelasan\\n[Verse 2] 1:08-1:32 - penjelasan\\n[Bridge] 1:32-1:48 - penjelasan\\n[Outro] 1:48-2:00 - penjelasan",
   "steps": [
     "Buka BandLab Android, tap tombol + lalu pilih Templates, cari template yang cocok untuk genre ini",
     "Langkah 2: cara ganti BPM template ke angka yang benar",
@@ -62,16 +122,16 @@ Balas HANYA dengan JSON object yang valid (tanpa markdown, tanpa backtick, tanpa
     "Langkah 6: cara tambah bass 808",
     "Langkah 7: cara buat section Intro di fitur Arrange BandLab",
     "Langkah 8: cara buat Verse dan Hook yang berbeda di Arrange",
-    "Langkah 9: cara setting mixer - level, pan, reverb per track",
-    "Langkah 10: cara tambah efek dan finalisasi beat",
-    "Langkah 11: tips spesifik genre ini",
+    "Langkah 9: cara setting volume per track sesuai tabel di atas di setiap section",
+    "Langkah 10: cara setting mixer - pan, reverb per track",
+    "Langkah 11: cara tambah efek dan finalisasi beat",
     "Langkah 12: cara save dan export beat"
   ],
-  "mixing": "Tips mixing dalam Bahasa Indonesia khusus genre ini. Sebutkan track mana yang di-pan berapa %, reverb send berapa % tiap instrumen, cara sidechain, EQ cut dan boost spesifik. Semua angka harus spesifik.",
+  "mixing": "Tips mixing dalam Bahasa Indonesia khusus genre ini. Sebutkan track mana di-pan berapa %, reverb send berapa % tiap instrumen, cara sidechain, EQ cut dan boost spesifik. Semua angka spesifik.",
   "protips": "3-4 tips profesional dalam Bahasa Indonesia untuk membuat beat ini outstanding. Rahasia produser spesifik genre ini."
 }
 
-Semua nilai harus realistis, akurat untuk genre tersebut, dan bisa langsung dipraktekkan di BandLab Android. Sangat spesifik dengan angka.`;
+Semua nilai volume_per_section harus realistis dan akurat untuk genre tersebut. Angka dB harus masuk akal secara teknis mixing. Sesuaikan nilai dengan genre yang diminta.`;
 
   try {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -82,7 +142,7 @@ Semua nilai harus realistis, akurat untuk genre tersebut, dan bisa langsung dipr
       },
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
-        max_tokens: 2500,
+        max_tokens: 3000,
         temperature: 0.7,
         messages: [
           {
@@ -95,15 +155,11 @@ Semua nilai harus realistis, akurat untuk genre tersebut, dan bisa langsung dipr
     });
 
     const aiData = await response.json();
-
-    if (aiData.error) {
-      return res.status(500).json({ error: aiData.error.message });
-    }
+    if (aiData.error) return res.status(500).json({ error: aiData.error.message });
 
     const rawText = aiData.choices[0].message.content;
     const clean = rawText.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(clean);
-
     res.json(parsed);
   } catch (err) {
     console.error('Generate error:', err);
@@ -112,6 +168,4 @@ Semua nilai harus realistis, akurat untuk genre tersebut, dan bisa langsung dipr
 });
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`🎵 ZEXBEAT AI running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🎵 ZEXBEAT AI running on port ${PORT}`));
