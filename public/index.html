@@ -349,6 +349,18 @@ header{
   margin-top:2px;
 }
 
+/* Volume per section table */
+.vol-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;}
+.vol-table th{background:var(--bg);color:var(--accent2);font-family:"Space Mono",monospace;font-size:9px;letter-spacing:2px;padding:8px 10px;text-align:center;border:1px solid var(--border);}
+.vol-table th:first-child{text-align:left;}
+.vol-table td{padding:8px 10px;border:1px solid var(--border);text-align:center;font-family:"Space Mono",monospace;font-size:11px;color:var(--text);}
+.vol-table td:first-child{text-align:left;color:var(--accent3);font-weight:700;font-size:12px;white-space:nowrap;}
+.vol-table tr:nth-child(even) td{background:rgba(0,229,255,.02);}
+.vol-table td.mute{color:var(--muted);font-style:italic;}
+.vol-table td.hook-val{color:var(--green);font-weight:700;}
+.vol-note{font-family:"Rajdhani",sans-serif;font-size:12px;color:var(--muted);font-style:italic;text-align:left !important;max-width:160px;}
+.vol-scroll{overflow-x:auto;margin-top:8px;}
+
 /* Footer */
 footer{
   text-align:center;
@@ -591,6 +603,42 @@ function renderOutput(d){
   // Build instruments HTML
   const instrHTML = d.instruments.map(s=>`<li>${s}</li>`).join('');
 
+  // Build volume per section table
+  let volTableHTML = '';
+  if(d.volume_per_section && d.volume_per_section.length){
+    const rows = d.volume_per_section.map(v => {
+      const hookClass = v.hook === 'mute' ? 'mute' : 'hook-val';
+      const introClass = v.intro === 'mute' ? 'mute' : '';
+      const verseClass = v.verse === 'mute' ? 'mute' : '';
+      const prehookClass = v.prehook === 'mute' ? 'mute' : '';
+      const outroClass = v.outro === 'mute' ? 'mute' : '';
+      return `<tr>
+        <td>${v.instrument}</td>
+        <td class="${introClass}">${v.intro}</td>
+        <td class="${verseClass}">${v.verse}</td>
+        <td class="${prehookClass}">${v.prehook}</td>
+        <td class="${hookClass}">${v.hook}</td>
+        <td class="${outroClass}">${v.outro}</td>
+        <td class="vol-note">${v.note||''}</td>
+      </tr>`;
+    }).join('');
+    volTableHTML = `
+      <div class="vol-scroll">
+        <table class="vol-table">
+          <thead><tr>
+            <th>INSTRUMEN</th>
+            <th>INTRO</th>
+            <th>VERSE</th>
+            <th>PRE-HOOK</th>
+            <th>HOOK</th>
+            <th>OUTRO</th>
+            <th>CATATAN</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+  }
+
   el.innerHTML = `
     <div class="beat-section highlight">
       <div class="section-label">BEAT IDENTITY</div>
@@ -607,12 +655,17 @@ function renderOutput(d){
       <ul class="step-list">${instrHTML}</ul>
     </div>
 
+    <div class="beat-section success">
+      <div class="section-label">VOLUME PER SECTION — dB TIAP BAGIAN</div>
+      ${volTableHTML}
+    </div>
+
     <div class="beat-section">
       <div class="section-label">STRUKTUR BEAT</div>
       <div class="beat-content">${d.structure}</div>
     </div>
 
-    <div class="beat-section success">
+    <div class="beat-section highlight">
       <div class="section-label">STEP-BY-STEP DI BANDLAB ANDROID</div>
       <ul class="step-list">${stepsHTML}</ul>
     </div>
@@ -622,7 +675,7 @@ function renderOutput(d){
       <div class="beat-content">${d.mixing}</div>
     </div>
 
-    <div class="beat-section highlight">
+    <div class="beat-section warning">
       <div class="section-label">PRO TIPS</div>
       <div class="beat-content">${d.protips}</div>
     </div>
